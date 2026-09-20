@@ -75,7 +75,59 @@ class RentalSystem:
         except FileNotFoundError:
             pass
 
-    # HELPER FUNCTIONS
+    def update_customer_info(self):
+        print("\nUpdate Customer Info")
+        c_id = input("Enter Customer ID: ").strip()
+        customer = self.get_customer_by_id(c_id)
+
+        if customer is None:
+            print("Error! Customer not found.")
+            return
+
+        print("\nCurrent Customer Info:")
+        customer.display_details()
+        print("\nPlease leave input blank to keep current customer details.")
+
+        new_name = input(f"Enter new name ({customer.customer_name}): ").strip() or None
+        new_phone = input(f"Enter new phone number ({customer.phone_number}): ").strip() or None
+        new_email = input(f"Enter new email address ({customer.email}): ").strip() or None
+        new_driver_license = input(f"Enter new driver license ({customer.driver_license}): ").strip() or None
+
+        customer.update_details(new_name, new_phone, new_email, new_driver_license)
+        print("Customer details updated successfully!!")
+    def update_vehicle_details(self):
+        print("\nUpdate Vehicle Details")
+        v_id = input("Enter Vehicle ID: ").strip()
+        car = self.get_vehicle_by_id(v_id)
+
+        if car is None:
+            print("Error! Vehicle not found.")
+            return
+
+        print("\nCurrent Vehicle Details")
+        print(
+            f"Vehicle ID: {car.vehicle_id}\n Registration: {car.registration}\n Make: {car.make}\n Model: {car.model}\n Daily Rate: ${car.daily_rate}\n")
+        print("Please leave input blank to keep current vehicle details.")
+
+        # Reassigning variables
+        new_registration = input(f"Enter new registration number ({car.registration}): ").strip() or None
+        new_make = input(f"Enter new make ({car.make}): ").strip() or None
+        new_model = input(f"Enter a new model ({car.model}): ").strip() or None
+        new_daily_rate = input(f"Enter a new rate (${car.daily_rate}): ").strip() or None
+
+        new_rate = None
+        if new_daily_rate is not None:
+            try:
+                parsed_rate = float(new_daily_rate)
+                if parsed_rate <= 0:
+                    print("Invalid rate. Daily rate will remain unchanged.")
+                else:
+                    new_rate = parsed_rate
+            except ValueError:
+                print("Invalid number input. Rate will remain unchanged.")
+
+        car.update_details(new_registration, new_make, new_model, new_rate)
+        print("Vehicle information updated successfully!")
 
     # I added these to make searching easier and keep the main code clean
     def get_vehicle_by_id(self, v_id):
@@ -125,6 +177,7 @@ class RentalSystem:
         new_car = Vehicle(v_id, reg, make, model, rate)
         self.vehicles.append(new_car)
         print("Vehicle added successfully!")
+
 
     def display_vehicles(self):
         print("\n--- Vehicle Fleet ---")
@@ -278,7 +331,9 @@ while True:
     print("7. Return a Vehicle")
     print("8. Display Active Rentals")
     print("9. Save Data")
-    print("10. Exit")
+    print("10. Update existing vehicle details")
+    print("11. Update existing customer details")
+    print("12. Exit")
     
     choice = input("\nEnter your choice (1-10): ")
     
@@ -301,6 +356,10 @@ while True:
     elif choice == '9':
         app.save_data()
     elif choice == '10':
+        app.update_vehicle_details()
+    elif choice == '11':
+        app.update_customer_info()
+    elif choice == '12':
         # Always save right before closing so we don't lose our work
         app.save_data() 
         print("Exiting system. Goodbye!")

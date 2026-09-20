@@ -39,3 +39,14 @@ class Vehicle:
             "daily_rate": self.daily_rate,
             "is_available": self.is_available
         }
+
+    def update_details(self,new_registration=None, new_make=None, new_model=None, new_daily_rate=None):
+        if new_registration:
+            self.registration = new_registration
+        if new_make:
+            self.make = new_make
+        if new_model:
+            self.model = new_model
+        if new_daily_rate is not None and new_daily_rate > 0:
+            self.daily_rate = float(new_daily_rate)
+

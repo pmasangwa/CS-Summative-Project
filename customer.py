@@ -33,3 +33,12 @@ class Customer:
             "email": self.email,
             "driver_license": self.driver_license
         }
+    def update_details(self, new_name=None,new_phone_number=None, new_email=None, new_driver_license=None):
+        if new_name:
+            self.customer_name = new_name
+        if new_email:
+            self.email = new_email
+        if new_driver_license:
+            self.driver_license = new_driver_license
+        if new_phone_number:
+            self.phone_number =new_phone_number
